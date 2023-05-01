@@ -8,34 +8,33 @@ class Solution
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
-    {
-        int src=0;
-        vector<int> visited(V,0);
-        auto comp =[](pair<int,int> a , pair<int,int> b)->bool{return a.second>b.second;};
+    
+    {  
+        auto comp = [](pair<int,int> a , pair<int,int> b) -> bool {return a.second>b.second;};
         priority_queue<pair<int,int>,vector<pair<int,int>>,decltype(comp)> pq(comp);
         pq.push(make_pair(0,0));
+        vector<int> visited(V,0);
+      //  visited[0]=1;
         int sum=0;
-        
-        while(!pq.empty()){
-            int vrtx=pq.top().first;
-            int wght=pq.top().second;
+        int x=0;
+        while(x!=V){
+            int vrtx = pq.top().first;
+            int dist = pq.top().second;
             pq.pop();
             if(visited[vrtx]==1){
                 continue;
             }
+            x++;
+            sum+=dist;
             visited[vrtx]=1;
-          //  cout<<wght<<endl;
-            sum+=wght;
             
-            for(auto x:adj[vrtx]){
-                  int vtx=x[0];
-                  int wt =x[1];
-                  if(visited[vtx]!=1){
-                      pq.push(make_pair(vtx,wt));
-                  }
+            for(int i=0;i<adj[vrtx].size();i++){
+                if(visited[adj[vrtx][i][0]]!=1){
+                    pq.push(make_pair(adj[vrtx][i][0],adj[vrtx][i][1]));
                 }
+            }
             
-            
+             
         }
         
         return sum;
